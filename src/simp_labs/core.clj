@@ -1,7 +1,8 @@
 (ns simp-labs.core
-  (:gen-class))
+  (:gen-class)
+  (:require [simp-labs.lab1.main :as lab1]))
 
 (defn -main
   "I don't do a whole lot ... yet."
   [& args]
-  (println "Hello, World!"))
+  (lab1/define-test-sets))
