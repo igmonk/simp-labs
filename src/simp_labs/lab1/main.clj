@@ -19,7 +19,22 @@
         f4 (->Gate3Nand "f4" x4 f3 x7)
         f5 (->Gate2Nand "f5" f2 f4)
         f6 (->Gate2Or "f6" f1 f5)]
-    f6))
+    f6)
+  #_(let [x1 (->GateIn "x1")
+          x2 (->GateIn "x2")
+          x3 (->GateIn "x3")
+          x4 (->GateIn "x4")
+          x5 (->GateIn "x5")
+          x6 (->GateIn "x6")
+          x7 (->GateIn "x7")
+
+          f1 (->Gate2Nand "f1" x1 x2)
+          f2 (->GateNot "f2" x3)
+          f3 (->Gate2Nor "f3" x5 x6)
+          f4 (->Gate3Nor "f4" x4 f3 x7)
+          f5 (->Gate2And "f5" f2 f4)
+          f6 (->Gate2And "f6" f1 f5)]
+      f6))
 
 (defn pp-test-set [constant-fault test-sets]
   (doseq [[gate-id test-set] test-sets]
