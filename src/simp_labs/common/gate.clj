@@ -13,3 +13,5 @@
 (defrecord Gate2Nand [id in1 in2])
 
 (defrecord Gate3Nand [id in1 in2 in3])
+
+(defrecord Gate3Nor [id in1 in2 in3])
