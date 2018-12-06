@@ -100,9 +100,9 @@
         (is (= [] (activity-inputs gate-not gate-in-x1 nil))))
 
       (testing "test-inputs"
-        (is (= {"not" [{"x1" 1}]}
+        (is (= {"not" [{"x1" 1}] "x1" [{"x1" 0}]}
                (test-inputs gate-not nil 0)))
-        (is (= {"not" [{"x1" 0}]}
+        (is (= {"not" [{"x1" 0}] "x1" [{"x1" 1}]}
                (test-inputs gate-not nil 1)))))))
 
 (deftest testable-Gate2Or-test
