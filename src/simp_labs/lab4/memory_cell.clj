@@ -7,6 +7,14 @@
 
 (defrecord CFinMemoryCell [^Atom value victim-cell])
 
-(defrecord CFid0MemoryCell [^Atom value victim-cell])
+(defrecord CFin01MemoryCell [^Atom value victim-cell])
 
-(defrecord CFid1MemoryCell [^Atom value victim-cell])
+(defrecord CFin10MemoryCell [^Atom value victim-cell])
+
+(defrecord CFid01MemoryCell0 [^Atom value victim-cell])
+
+(defrecord CFid01MemoryCell1 [^Atom value victim-cell])
+
+(defrecord CFid10MemoryCell0 [^Atom value victim-cell])
+
+(defrecord CFid10MemoryCell1 [^Atom value victim-cell])

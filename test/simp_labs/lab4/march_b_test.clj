@@ -1,168 +1,96 @@
 (ns simp-labs.lab4.march-b-test
   (:require [clojure.test :refer :all]
             [simp-labs.lab4.march-b :refer :all]
-            [simp-labs.lab4.ram :refer :all]
-            [simp-labs.lab4.memory-cell :refer :all]))
+            [simp-labs.lab4.test-utils :as u]))
 
-(deftest check-cell-value-test
-  (testing "check-cell-value"
-    (let [cell-00 (->SimpleMemoryCell (atom 0))
-          cell-01 (->SimpleMemoryCell (atom 0))
+(def ram-size 4)
 
-          cell-10 (->SimpleMemoryCell (atom 0))
-          cell-11 (->SimpleMemoryCell (atom 1))
+; March-B Tests: SAF
 
-          ram (->SimpleRAM [[cell-00 cell-01]
-                            [cell-10 cell-11]])]
-      (is (nil? (check-cell-value ram 0 0 0)))
-      (is (thrown? Exception (check-cell-value ram 0 0 1)))
+(deftest walking-01-saf-0-test
+  (testing "March-B SAF0"
+    (let [rams (u/initSAFRams ram-size 0)
+          actual (map run rams)]
+      (u/print-test-report "March-B" "SAF0" (u/error-detection-probability actual (count rams))))))
 
-      (is (nil? (check-cell-value ram 0 1 0)))
-      (is (thrown? Exception (check-cell-value ram 0 1 1)))
+(deftest walking-01-saf-1-test
+  (testing "March-B SAF1"
+    (let [rams (u/initSAFRams ram-size 1)
+          actual (map run rams)]
+      (u/print-test-report "March-B" "SAF1" (u/error-detection-probability actual (count rams))))))
 
-      (is (nil? (check-cell-value ram 1 0 0)))
-      (is (thrown? Exception (check-cell-value ram 1 0 1)))
+; March-B Tests: CFin
 
-      (is (thrown? Exception (check-cell-value ram 1 1 0)))
-      (is (nil? (check-cell-value ram 1 1 1))))))
+(deftest walking-01-CFin-L-01-test
+  (testing "March-B CFin ∧〈↑,aj〉"
+    (let [rams (u/initAllCFinL01Rams ram-size)
+          actual (map run rams)]
+      (u/print-test-report "March-B" "CFin ∧〈↑,aj〉" (u/error-detection-probability actual (count rams))))))
 
-(deftest check-cell-0-test
-  (testing "check-cell-0"
-    (let [cell-00 (->SimpleMemoryCell (atom 0))
-          cell-01 (->SimpleMemoryCell (atom 0))
+(deftest walking-01-CFin-G-01-test
+  (testing "March-B CFin ∨〈↑,aj〉"
+    (let [rams (u/initAllCFinG01Rams ram-size)
+          actual (map run rams)]
+      (u/print-test-report "March-B" "CFin ∨〈↑,aj〉" (u/error-detection-probability actual (count rams))))))
 
-          cell-10 (->SimpleMemoryCell (atom 0))
-          cell-11 (->SimpleMemoryCell (atom 1))
+(deftest walking-01-CFin-L-10-test
+  (testing "March-B CFin ∧〈↓,aj〉"
+    (let [rams (u/initAllCFinL10Rams ram-size)
+          actual (map run rams)]
+      (u/print-test-report "March-B" "CFin ∧〈↓,aj〉" (u/error-detection-probability actual (count rams))))))
 
-          ram (->SimpleRAM [[cell-00 cell-01]
-                            [cell-10 cell-11]])]
-      (is (nil? (check-cell-0 ram 0 0)))
-      (is (nil? (check-cell-0 ram 0 1)))
-      (is (nil? (check-cell-0 ram 1 0)))
-      (is (thrown? Exception (check-cell-0 ram 1 1))))))
+(deftest walking-01-CFin-G-10-test
+  (testing "March-B CFin ∨〈↓,aj〉"
+    (let [rams (u/initAllCFinG10Rams ram-size)
+          actual (map run rams)]
+      (u/print-test-report "March-B" "CFin ∨〈↓,aj〉" (u/error-detection-probability actual (count rams))))))
 
-(deftest check-cell-1-test
-  (testing "check-cell-1"
-    (let [cell-00 (->SimpleMemoryCell (atom 0))
-          cell-01 (->SimpleMemoryCell (atom 0))
+; March-B Tests: CFid
 
-          cell-10 (->SimpleMemoryCell (atom 0))
-          cell-11 (->SimpleMemoryCell (atom 1))
+(deftest walking-01-CFid-L-01-0-test
+  (testing "March-B CFid ∧〈↑,0〉"
+    (let [rams (u/initAllCFidL01-0-rams ram-size)
+          actual (map run rams)]
+      (u/print-test-report "March-B" "CFid ∧〈↑,0〉" (u/error-detection-probability actual (count rams))))))
 
-          ram (->SimpleRAM [[cell-00 cell-01]
-                            [cell-10 cell-11]])]
-      (is (thrown? Exception (check-cell-1 ram 0 0)))
-      (is (thrown? Exception (check-cell-1 ram 0 1)))
-      (is (thrown? Exception (check-cell-1 ram 1 0)))
-      (is (nil? (check-cell-1 ram 1 1))))))
+(deftest walking-01-CFid-L-01-1-test
+  (testing "March-B CFid ∧〈↑,1〉"
+    (let [rams (u/initAllCFidL01-1-rams ram-size)
+          actual (map run rams)]
+      (u/print-test-report "March-B" "CFid ∧〈↑,1〉" (u/error-detection-probability actual (count rams))))))
 
-(deftest run-test
-  (testing "run"
+(deftest walking-01-CFid-L-10-0-test
+  (testing "March-B CFid ∧〈↓,0〉"
+    (let [rams (u/initAllCFidL10-0-rams ram-size)
+          actual (map run rams)]
+      (u/print-test-report "March-B" "CFid ∧〈↓,0〉" (u/error-detection-probability actual (count rams))))))
 
-    (testing "Valid cells"
-      (let [cell-00 (->SimpleMemoryCell (atom 0))
-            cell-01 (->SimpleMemoryCell (atom 0))
-            cell-02 (->SimpleMemoryCell (atom 0))
+(deftest walking-01-CFid-L-10-1-test
+  (testing "March-B CFid ∧〈↓,1〉"
+    (let [rams (u/initAllCFidL10-1-rams ram-size)
+          actual (map run rams)]
+      (u/print-test-report "March-B" "CFid ∧〈↓,1〉" (u/error-detection-probability actual (count rams))))))
 
-            cell-10 (->SimpleMemoryCell (atom 0))
-            cell-11 (->SimpleMemoryCell (atom 0))
-            cell-12 (->SimpleMemoryCell (atom 0))
+(deftest walking-01-CFid-G-01-0-test
+  (testing "March-B CFid ∨〈↑,0〉"
+    (let [rams (u/initAllCFidG01-0-rams ram-size)
+          actual (map run rams)]
+      (u/print-test-report "March-B" "CFid ∨〈↑,0〉" (u/error-detection-probability actual (count rams))))))
 
-            cell-20 (->SimpleMemoryCell (atom 0))
-            cell-21 (->SimpleMemoryCell (atom 0))
-            cell-22 (->SimpleMemoryCell (atom 0))
+(deftest walking-01-CFid-G-01-1-test
+  (testing "March-B CFid ∨〈↑,1〉"
+    (let [rams (u/initAllCFidG01-1-rams ram-size)
+          actual (map run rams)]
+      (u/print-test-report "March-B" "CFid ∨〈↑,1〉" (u/error-detection-probability actual (count rams))))))
 
-            ram (->SimpleRAM [[cell-00 cell-01 cell-02]
-                              [cell-10 cell-11 cell-12]
-                              [cell-20 cell-21 cell-22]])]
-        (is (= ram (run ram)))))
+(deftest walking-01-CFid-G-10-0-test
+  (testing "March-B CFid ∨〈↓,0〉"
+    (let [rams (u/initAllCFidG10-0-rams ram-size)
+          actual (map run rams)]
+      (u/print-test-report "March-B" "CFid ∨〈↓,0〉" (u/error-detection-probability actual (count rams))))))
 
-    (testing "SAF0 fault"
-      (let [cell-00 (->SimpleMemoryCell (atom 0))
-            cell-01 (->SimpleMemoryCell (atom 0))
-            cell-02 (->SimpleMemoryCell (atom 0))
-
-            cell-10 (->SimpleMemoryCell (atom 0))
-            cell-11 (->SimpleMemoryCell (atom 0))
-            cell-12 (->SimpleMemoryCell (atom 0))
-
-            cell-20 (->SimpleMemoryCell (atom 0))
-            cell-21 (->SimpleMemoryCell (atom 0))
-            cell-22 (->ImmutableMemoryCell (atom 0))
-
-            ram (->SimpleRAM [[cell-00 cell-01 cell-02]
-                              [cell-10 cell-11 cell-12]
-                              [cell-20 cell-21 cell-22]])]
-        (is (thrown? Exception (run ram)))))
-
-    (testing "SAF1 fault"
-      (let [cell-00 (->SimpleMemoryCell (atom 0))
-            cell-01 (->SimpleMemoryCell (atom 0))
-            cell-02 (->SimpleMemoryCell (atom 0))
-
-            cell-10 (->SimpleMemoryCell (atom 0))
-            cell-11 (->SimpleMemoryCell (atom 0))
-            cell-12 (->SimpleMemoryCell (atom 0))
-
-            cell-20 (->SimpleMemoryCell (atom 0))
-            cell-21 (->SimpleMemoryCell (atom 0))
-            cell-22 (->ImmutableMemoryCell (atom 1))
-
-            ram (->SimpleRAM [[cell-00 cell-01 cell-02]
-                              [cell-10 cell-11 cell-12]
-                              [cell-20 cell-21 cell-22]])]
-        (is (thrown? Exception (run ram)))))
-
-    (testing "CFin fault"
-      (let [cell-00 (->SimpleMemoryCell (atom 0))
-            cell-01 (->SimpleMemoryCell (atom 0))
-            cell-02 (->SimpleMemoryCell (atom 0))
-
-            cell-10 (->SimpleMemoryCell (atom 0))
-            cell-11 (->SimpleMemoryCell (atom 0))
-            cell-12 (->SimpleMemoryCell (atom 0))
-
-            cell-20 (->SimpleMemoryCell (atom 0))
-            cell-21 (->SimpleMemoryCell (atom 0))
-            cell-22 (->CFinMemoryCell (atom 0) cell-21)
-
-            ram (->SimpleRAM [[cell-00 cell-01 cell-02]
-                              [cell-10 cell-11 cell-12]
-                              [cell-20 cell-21 cell-22]])]
-        (is (thrown? Exception (run ram)))))
-
-    (testing "CFid (0) fault"
-      (let [cell-00 (->SimpleMemoryCell (atom 0))
-            cell-01 (->SimpleMemoryCell (atom 0))
-            cell-02 (->SimpleMemoryCell (atom 0))
-
-            cell-10 (->SimpleMemoryCell (atom 0))
-            cell-11 (->SimpleMemoryCell (atom 0))
-            cell-12 (->SimpleMemoryCell (atom 0))
-
-            cell-20 (->SimpleMemoryCell (atom 0))
-            cell-21 (->SimpleMemoryCell (atom 0))
-            cell-22 (->CFid0MemoryCell (atom 0) cell-21)
-
-            ram (->SimpleRAM [[cell-00 cell-01 cell-02]
-                              [cell-10 cell-11 cell-12]
-                              [cell-20 cell-21 cell-22]])]
-        (is (thrown? Exception (run ram)))))
-
-    (testing "CFid (1) fault"
-      (let [cell-00 (->SimpleMemoryCell (atom 0))
-            cell-01 (->SimpleMemoryCell (atom 0))
-            cell-02 (->SimpleMemoryCell (atom 0))
-
-            cell-10 (->SimpleMemoryCell (atom 0))
-            cell-11 (->SimpleMemoryCell (atom 0))
-            cell-12 (->SimpleMemoryCell (atom 0))
-
-            cell-20 (->SimpleMemoryCell (atom 0))
-            cell-21 (->SimpleMemoryCell (atom 0))
-            cell-22 (->CFid1MemoryCell (atom 0) cell-21)
-
-            ram (->SimpleRAM [[cell-00 cell-01 cell-02]
-                              [cell-10 cell-11 cell-12]
-                              [cell-20 cell-21 cell-22]])]
-        (is (thrown? Exception (run ram)))))))
+(deftest walking-01-CFid-G-10-1-test
+  (testing "March-B CFid ∨〈↓,1〉"
+    (let [rams (u/initAllCFidG10-1-rams ram-size)
+          actual (map run rams)]
+      (u/print-test-report "March-B" "CFid ∨〈↓,1〉" (u/error-detection-probability actual (count rams))))))

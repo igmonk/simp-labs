@@ -60,20 +60,23 @@
 
 (defn run [ram]
 
-  ; M0: ?(w0)
-  (run-m0 ram)
+  (try
 
-  ; M1: ↑(r0,w1,r1,w0,r0,w1)
-  (run-m1 ram)
+    ; M0: ?(w0)
+    (run-m0 ram)
 
-  ; M2: ↑(r1,w0,w1)
-  (run-m2 ram)
+    ; M1: ↑(r0,w1,r1,w0,r0,w1)
+    (run-m1 ram)
 
-  ; M3: ↓(r1,w0,w1,w0)
-  (run-m3 ram)
+    ; M2: ↑(r1,w0,w1)
+    (run-m2 ram)
 
-  ; M4: ↓(r0,w1,w0)
-  (run-m4 ram)
+    ; M3: ↓(r1,w0,w1,w0)
+    (run-m3 ram)
 
-  (prn (str "SUCCESS: March-B didn't find any RAM fault."))
-  ram)
+    ; M4: ↓(r0,w1,w0)
+    (run-m4 ram)
+
+    true
+
+    (catch Exception e false)))
